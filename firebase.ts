@@ -10,7 +10,9 @@ import {
   signOut
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import firebaseConfig from '../firebase-applet-config.json';
+const config = {
+  // paste JSON content here
+};
 
 // Initialize Firebase SDK
 const app = initializeApp(firebaseConfig);
