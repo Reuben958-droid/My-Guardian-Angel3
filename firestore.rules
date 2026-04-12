@@ -1,0 +1,74 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: prayers
+// Document ID: auto-generated
+// Fields:
+//   - text: string (required, 1-500 chars) - The prayer text
+//   - tokenId: string (required, enum) - healing, strength, gratitude, guidance
+//   - candles: int (required, >= 0) - Number of candles lit
+//   - isCandleLit: bool (optional) - Whether creator lit a candle
+//   - createdAt: int (required) - Milliseconds timestamp
+//   - x: number (required, 0-100) - Horizontal position
+//   - y: number (required, 0-120) - Vertical position
+//   - size: number (required, 50-300) - Bubble size
+//   - duration: number (required, 10-60) - Drift duration
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidPrayer(data) {
+      return data.text is string && data.text.size() > 0 && data.text.size() <= 500 &&
+             data.tokenId in ['healing', 'strength', 'gratitude', 'guidance'] &&
+             data.candles is int && data.candles >= 0 &&
+             data.createdAt is int &&
+             data.x is number && data.x >= 0 && data.x <= 100 &&
+             data.y is number && data.y >= 0 && data.y <= 120 &&
+             data.size is number && data.size >= 50 && data.size <= 300 &&
+             data.duration is number && data.duration >= 10 && data.duration <= 60 &&
+             data.uid is string && data.uid == request.auth.uid;
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    match /prayers/{prayerId} {
+      // Allow anyone to read prayers to see the wall
+      allow read: if true;
+
+      // Allow anyone to create a prayer (anonymity requested)
+      allow create: if isAuthenticated() &&
+                      hasRequiredFields(['text', 'tokenId', 'candles', 'createdAt', 'x', 'y', 'size', 'duration', 'uid']) &&
+                      hasOnlyAllowedFields(['text', 'tokenId', 'candles', 'isCandleLit', 'createdAt', 'x', 'y', 'size', 'duration', 'uid']) &&
+                      isValidPrayer(request.resource.data);
+
+      // Allow updating ONLY the candles count
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['candles']) &&
+                      request.resource.data.candles == resource.data.candles + 1;
+      
+      // No one can delete prayers (they fade away client-side or via TTL if configured, but here we just don't allow manual deletion)
+      allow delete: if false;
+    }
+  }
+}

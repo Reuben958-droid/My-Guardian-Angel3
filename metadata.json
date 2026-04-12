@@ -1,0 +1,5 @@
+{
+  "name": "Celestial Sanctuary",
+  "description": "Find your guardian angel through a spiritual journey. Experience personalized guidance, meditations, and a community prayer wall.",
+  "requestFramePermissions": ["microphone"]
+}

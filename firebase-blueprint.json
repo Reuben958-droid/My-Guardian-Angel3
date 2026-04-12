@@ -1,0 +1,28 @@
+{
+  "entities": {
+    "Prayer": {
+      "title": "Prayer",
+      "description": "A prayer or request shared on the Wall of Light.",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string", "description": "The prayer text content." },
+        "tokenId": { "type": "string", "description": "The ID of the energy token selected." },
+        "candles": { "type": "integer", "description": "Number of candles lit for this prayer." },
+        "isCandleLit": { "type": "boolean", "description": "Whether the original creator lit a candle." },
+        "createdAt": { "type": "integer", "description": "Timestamp in milliseconds when the prayer was created." },
+        "x": { "type": "number", "description": "Horizontal position percentage." },
+        "y": { "type": "number", "description": "Vertical starting position percentage." },
+        "size": { "type": "number", "description": "Bubble size." },
+        "duration": { "type": "number", "description": "Drift duration in seconds." },
+        "uid": { "type": "string", "description": "The UID of the user who created the prayer." }
+      },
+      "required": ["text", "tokenId", "candles", "createdAt", "x", "y", "size", "duration", "uid"]
+    }
+  },
+  "firestore": {
+    "prayers": {
+      "schema": { "$ref": "Prayer" },
+      "description": "Collection of prayers shared on the Wall of Light."
+    }
+  }
+}

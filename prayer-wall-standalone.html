@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Celestial Prayer Wall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+        }
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, #f3e8ff 0%, #ffffff 100%);
+            min-h-screen;
+        }
+        .elegant-heading {
+            font-family: var(--font-serif);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .golden-text {
+            background: linear-gradient(to bottom, #ffffff, #fde047, #ca8a04);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.3));
+        }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+        .flicker {
+            animation: flicker 2s infinite ease-in-out;
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; transform: scale(1) translateY(0); filter: blur(2px) brightness(1); }
+            25% { opacity: 1; transform: scale(1.05) translateY(-2px); filter: blur(1px) brightness(1.2); }
+            50% { opacity: 0.9; transform: scale(0.95) translateY(1px); filter: blur(3px) brightness(0.9); }
+            75% { opacity: 1; transform: scale(1.1) translateY(-1px); filter: blur(1px) brightness(1.3); }
+        }
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-particle var(--duration) infinite linear;
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0; }
+        }
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+    <!-- Floating Particles Container -->
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Hero Header -->
+    <header class="relative pt-24 pb-16 px-4 text-center z-10">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="elegant-heading text-5xl md:text-7xl golden-text mb-6">
+                The Celestial Prayer Wall
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-500 italic font-serif max-w-2xl mx-auto leading-relaxed">
+                "Share your prayer or intention. Light a flame. Feel the angels’ presence."
+            </p>
+            
+            <!-- Faint Angel Wings SVG -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 opacity-5 pointer-events-none w-full max-w-4xl">
+                <svg viewBox="0 0 800 400" fill="currentColor" class="text-slate-900">
+                    <path d="M400,200 C300,100 100,100 50,200 C100,300 300,300 400,200 Z" />
+                    <path d="M400,200 C500,100 700,100 750,200 C700,300 500,300 400,200 Z" />
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- Submission Form -->
+    <section class="px-4 pb-24 relative z-10">
+        <div class="max-w-2xl mx-auto glass-morphism p-8 md:p-12 rounded-3xl relative overflow-hidden">
+            <!-- Submission Overlay (Hidden by default) -->
+            <div id="submissionOverlay" class="absolute inset-0 z-50 bg-white/80 backdrop-blur-sm rounded-3xl flex flex-col items-center justify-center hidden">
+                <div class="w-16 h-16 relative mb-4">
+                    <div class="absolute inset-0 bg-yellow-500 rounded-full blur-xl animate-pulse"></div>
+                    <div class="relative w-full h-full flicker">
+                        <svg viewBox="0 0 100 100" class="w-full h-full fill-yellow-500">
+                            <path d="M50,10 C50,10 20,40 20,70 C20,85 35,95 50,95 C65,95 80,85 80,70 C80,40 50,10 50,10 Z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-yellow-700 font-serif italic text-lg">Lighting your flame...</p>
+            </div>
+
+            <form id="prayerForm" class="space-y-8">
+                <div class="space-y-4">
+                    <textarea id="prayerText" required placeholder="Write your prayer or intention here..." class="w-full bg-white/40 border border-slate-200 rounded-2xl p-6 text-lg text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 min-h-[160px] resize-none transition-all"></textarea>
+                    
+                    <div class="flex flex-wrap gap-2 justify-center" id="categoryButtons">
+                        <button type="button" class="cat-btn px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all border bg-yellow-500 border-yellow-500 text-white shadow-lg" data-category="Healing & Comfort">Healing & Comfort</button>
+                        <button type="button" class="cat-btn px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all border bg-white/50 border-yellow-500/30 text-yellow-700 hover:bg-yellow-50" data-category="Guidance & Clarity">Guidance & Clarity</button>
+                        <button type="button" class="cat-btn px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all border bg-white/50 border-yellow-500/30 text-yellow-700 hover:bg-yellow-50" data-category="Protection & Safety">Protection & Safety</button>
+                        <button type="button" class="cat-btn px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all border bg-white/50 border-yellow-500/30 text-yellow-700 hover:bg-yellow-50" data-category="Gratitude & Blessings">Gratitude & Blessings</button>
+                        <button type="button" class="cat-btn px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all border bg-white/50 border-yellow-500/30 text-yellow-700 hover:bg-yellow-50" data-category="Strength & Courage">Strength & Courage</button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-6">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <div class="relative">
+                                <input type="checkbox" id="anonToggle" checked class="sr-only">
+                                <div id="toggleBg" class="w-12 h-6 rounded-full transition-colors bg-yellow-500"></div>
+                                <div id="toggleCircle" class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform translate-x-6"></div>
+                            </div>
+                            <span class="text-sm text-slate-600 font-medium">Keep my prayer anonymous</span>
+                        </label>
+
+                        <div id="nameField" class="hidden">
+                            <input type="text" id="authorName" placeholder="Your name" class="bg-white/50 border border-slate-200 rounded-full px-4 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-yellow-500/30">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full md:w-auto px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-white rounded-full font-serif text-lg tracking-wide shadow-xl hover:shadow-yellow-500/20 transition-all flex items-center justify-center gap-3 group">
+                        Share Intention with the Angels
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- The Open Prayer Wall -->
+    <section class="max-w-7xl mx-auto px-4 pb-32 relative z-10">
+        <h2 class="elegant-heading text-3xl md:text-4xl text-slate-700 text-center mb-16 relative">
+            Prayers & Intentions Shared Today
+            <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-1 bg-yellow-500/30 rounded-full"></div>
+        </h2>
+
+        <div id="prayerGrid" class="masonry-grid">
+            <!-- Prayers will be injected here -->
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="prayerModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-[2rem] p-10 md:p-16 max-w-2xl w-full relative shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-yellow-500/10 rounded-full blur-[80px]"></div>
+            <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px]"></div>
+
+            <button id="closeModal" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+
+            <div class="flex flex-col items-center text-center">
+                <div class="mb-8 relative">
+                    <div class="absolute inset-0 bg-yellow-500/30 rounded-full blur-2xl animate-pulse"></div>
+                    <div class="relative w-16 h-20 flicker">
+                        <svg viewBox="0 0 100 100" class="w-full h-full fill-yellow-500">
+                            <path d="M50,10 C50,10 20,40 20,70 C20,85 35,95 50,95 C65,95 80,85 80,70 C80,40 50,10 50,10 Z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <span id="modalCategory" class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-600 mb-6 px-4 py-1.5 bg-yellow-500/10 rounded-full border border-yellow-500/20"></span>
+
+                <p id="modalText" class="text-2xl md:text-3xl text-slate-700 font-serif italic leading-relaxed mb-10"></p>
+
+                <div class="flex items-center gap-3 mb-12">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <div class="text-left">
+                        <p id="modalAuthor" class="text-sm font-bold text-slate-700"></p>
+                        <p id="modalDate" class="text-xs text-slate-400"></p>
+                    </div>
+                </div>
+
+                <button id="sendLightBtn" class="group relative px-10 py-4 bg-yellow-500 hover:bg-yellow-400 text-white rounded-full font-serif text-xl tracking-wide shadow-xl hover:shadow-yellow-500/30 transition-all flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-125 transition-transform"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+                    Send Light to This Prayer
+                    <span id="modalLights" class="ml-2 bg-white/20 px-3 py-0.5 rounded-full text-sm font-sans"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Data
+        let prayers = [
+            { id: '1', text: "For my mother's recovery after surgery. May she feel the angels' healing touch.", author: "Sarah", category: "Healing & Comfort", date: "4/6/2026", lights: 42 },
+            { id: '2', text: "Seeking clarity on my next career path. Please guide my steps towards my true purpose.", author: "Anonymous", category: "Guidance & Clarity", date: "4/6/2026", lights: 15 },
+            { id: '3', text: "Protection for my children as they travel across the country this week.", author: "David", category: "Protection & Safety", date: "4/6/2026", lights: 28 },
+            { id: '4', text: "Deeply grateful for the unexpected blessing that came my way today. Thank you, guardians.", author: "Anonymous", category: "Gratitude & Blessings", date: "4/6/2026", lights: 56 },
+            { id: '5', text: "Give me the courage to face the challenges ahead with a peaceful heart.", author: "Anonymous", category: "Strength & Courage", date: "4/6/2026", lights: 31 },
+            { id: '6', text: "May the light of peace shine upon all who are suffering in silence.", author: "Elena", category: "Healing & Comfort", date: "4/6/2026", lights: 89 }
+        ];
+
+        let selectedCategory = "Healing & Comfort";
+        let currentPrayerId = null;
+
+        // Initialize Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.top = Math.random() * 100 + '%';
+            p.style.width = (Math.random() * 4 + 2) + 'px';
+            p.style.height = (Math.random() * 4 + 2) + 'px';
+            p.style.setProperty('--duration', (Math.random() * 10 + 10) + 's');
+            p.style.setProperty('--drift', (Math.random() * 200 - 100) + 'px');
+            p.style.opacity = Math.random() * 0.5 + 0.2;
+            particlesContainer.appendChild(p);
+        }
+
+        // Category Selection
+        const catBtns = document.querySelectorAll('.cat-btn');
+        catBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                catBtns.forEach(b => {
+                    b.classList.remove('bg-yellow-500', 'border-yellow-500', 'text-white', 'shadow-lg');
+                    b.classList.add('bg-white/50', 'border-yellow-500/30', 'text-yellow-700');
+                });
+                btn.classList.add('bg-yellow-500', 'border-yellow-500', 'text-white', 'shadow-lg');
+                btn.classList.remove('bg-white/50', 'border-yellow-500/30', 'text-yellow-700');
+                selectedCategory = btn.dataset.category;
+            });
+        });
+
+        // Anonymous Toggle
+        const anonToggle = document.getElementById('anonToggle');
+        const toggleBg = document.getElementById('toggleBg');
+        const toggleCircle = document.getElementById('toggleCircle');
+        const nameField = document.getElementById('nameField');
+
+        anonToggle.addEventListener('change', () => {
+            if (anonToggle.checked) {
+                toggleBg.classList.replace('bg-slate-200', 'bg-yellow-500');
+                toggleCircle.classList.replace('translate-x-0', 'translate-x-6');
+                nameField.classList.add('hidden');
+            } else {
+                toggleBg.classList.replace('bg-yellow-500', 'bg-slate-200');
+                toggleCircle.classList.replace('translate-x-6', 'translate-x-0');
+                nameField.classList.remove('hidden');
+            }
+        });
+
+        // Form Submission
+        const prayerForm = document.getElementById('prayerForm');
+        const overlay = document.getElementById('submissionOverlay');
+
+        prayerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = document.getElementById('prayerText').value;
+            const author = anonToggle.checked ? "Anonymous" : (document.getElementById('authorName').value || "Kind Spirit");
+            
+            overlay.classList.remove('hidden');
+            
+            setTimeout(() => {
+                const newPrayer = {
+                    id: Date.now().toString(),
+                    text,
+                    author,
+                    category: selectedCategory,
+                    date: new Date().toLocaleDateString(),
+                    lights: 0
+                };
+                prayers.unshift(newPrayer);
+                renderPrayers();
+                
+                prayerForm.reset();
+                overlay.classList.add('hidden');
+                if (!anonToggle.checked) {
+                    anonToggle.click(); // Reset to anonymous
+                }
+            }, 1500);
+        });
+
+        // Render Prayers
+        const grid = document.getElementById('prayerGrid');
+        function renderPrayers() {
+            grid.innerHTML = '';
+            prayers.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'group cursor-pointer bg-white/40 hover:bg-white/60 backdrop-blur-sm border border-white/50 p-8 rounded-3xl transition-all hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center';
+                card.onclick = () => openModal(p);
+                card.innerHTML = `
+                    <div class="mb-6 relative">
+                        <div class="absolute inset-0 bg-yellow-500/20 rounded-full blur-xl group-hover:bg-yellow-500/40 transition-colors"></div>
+                        <div class="relative w-12 h-16 flicker">
+                            <svg viewBox="0 0 100 100" class="w-full h-full fill-yellow-500">
+                                <path d="M50,10 C50,10 20,40 20,70 C20,85 35,95 50,95 C65,95 80,85 80,70 C80,40 50,10 50,10 Z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-yellow-600 mb-4 px-3 py-1 bg-yellow-500/10 rounded-full">${p.category}</span>
+                    <p class="text-slate-600 font-serif italic line-clamp-3 mb-6 text-lg leading-relaxed">"${p.text}"</p>
+                    <div class="mt-auto flex flex-col items-center gap-2">
+                        <span class="text-sm font-medium text-slate-400">— ${p.author}</span>
+                        <div class="flex items-center gap-1.5 text-yellow-600/60 text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+                            <span>${p.lights} lights</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('prayerModal');
+        function openModal(p) {
+            currentPrayerId = p.id;
+            document.getElementById('modalCategory').innerText = p.category;
+            document.getElementById('modalText').innerText = `"${p.text}"`;
+            document.getElementById('modalAuthor').innerText = p.author;
+            document.getElementById('modalDate').innerText = p.date;
+            document.getElementById('modalLights').innerText = p.lights;
+            modal.classList.remove('hidden');
+        }
+
+        document.getElementById('closeModal').onclick = () => modal.classList.add('hidden');
+        modal.onclick = () => modal.classList.add('hidden');
+
+        document.getElementById('sendLightBtn').onclick = (e) => {
+            e.stopPropagation();
+            const p = prayers.find(pr => pr.id === currentPrayerId);
+            if (p) {
+                p.lights++;
+                document.getElementById('modalLights').innerText = p.lights;
+                renderPrayers();
+            }
+        };
+
+        renderPrayers();
+    </script>
+</body>
+</html>
