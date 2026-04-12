@@ -14,7 +14,7 @@ import { AuthModal } from './AuthModal';
 import { auth, onAuthStateChanged, signOut } from './firebase';
 import { ANGELS, QUIZ_QUESTIONS, Angel } from './types';
 import { User as FirebaseUser } from 'firebase/auth';
-import { cn } from './lib/utils';
+import { cn } from './utils';
 
 type AppState = 'landing' | 'quiz' | 'revelation' | 'results';
 
