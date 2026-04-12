@@ -11,7 +11,6 @@ import {
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 const config = {
-  {
   projectId: "gen-lang-client-0928112582",
   appId: "1:474629672752:web:74d1438f13346edc6342f5",
   apiKey: "AIzaSyBWkg93t2bhkP1rroPKy5RS-EZu4CxNIQo",
