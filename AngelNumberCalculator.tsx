@@ -17,7 +17,7 @@ import {
   Copy
 } from 'lucide-react';
 import { cn } from './utils';
-import { ANGEL_NUMBERS, DEFAULT_MEANINGS, AngelNumberData } from import './angelNumbers';
+import { ANGEL_NUMBERS, DEFAULT_MEANINGS, AngelNumberData } from './angelNumbers';
 
 interface AngelNumberCalculatorProps {
   onClose: () => void;
