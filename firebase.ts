@@ -15,14 +15,13 @@ const config = {
   appId: "1:474629672752:web:74d1438f13346edc6342f5",
   apiKey: "AIzaSyBWkg93t2bhkP1rroPKy5RS-EZu4CxNIQo",
   authDomain: "gen-lang-client-0928112582.firebaseapp.com",
-  firestoreDatabaseId: "ai-studio-f1c0830d-21b2-4458-ae6b-d8a62a510911",
   storageBucket: "gen-lang-client-0928112582.firebasestorage.app",
   messagingSenderId: "474629672752"
 };
 
 // Initialize Firebase SDK
 const app = initializeApp(config);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+export const db = getFirestore(app);
 export const auth = getAuth();
 export const googleProvider = new GoogleAuthProvider();
 
