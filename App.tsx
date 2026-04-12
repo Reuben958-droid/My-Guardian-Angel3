@@ -1,14 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, ChevronRight, ArrowLeft, Heart, Wind, User, LogOut } from 'lucide-react';
-import { CelestialBackground } from './components/CelestialBackground';
-import { AngelProfile } from './components/AngelProfile';
-import { PrayerWall } from './components/PrayerWall';
-import { AngelNumberCalculator } from './components/AngelNumberCalculator';
-import { MeditationPlayer } from './components/MeditationPlayer';
-import { DailyGuidance } from './components/DailyGuidance';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { AuthModal } from './components/AuthModal';
+
+import { CelestialBackground } from './CelestialBackground';
+import { AngelProfile } from './AngelProfile';
+import { PrayerWall } from './PrayerWall';
+import { AngelNumberCalculator } from './AngelNumberCalculator';
+import { MeditationPlayer } from './MeditationPlayer';
+import { DailyGuidance } from './DailyGuidance';
+import { ErrorBoundary } from './ErrorBoundary';
+import { AuthModal } from './AuthModal';
+
 import { auth, onAuthStateChanged, signOut } from './firebase';
 import { ANGELS, QUIZ_QUESTIONS, Angel } from './types';
 import { User as FirebaseUser } from 'firebase/auth';
