@@ -20,7 +20,6 @@ const config = {
   "storageBucket": "gen-lang-client-0928112582.firebasestorage.app",
   "messagingSenderId": "474629672752",
   "measurementId": ""
-}
 };
 
 // Initialize Firebase SDK
