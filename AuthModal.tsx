@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Mail, Lock, User, LogIn, UserPlus, Sparkles, AlertCircle } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from './utils';
 import { 
   auth, 
   googleProvider, 
