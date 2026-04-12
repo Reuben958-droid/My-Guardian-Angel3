@@ -21,7 +21,7 @@ const config = {
 };
 
 // Initialize Firebase SDK
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth();
 export const googleProvider = new GoogleAuthProvider();
