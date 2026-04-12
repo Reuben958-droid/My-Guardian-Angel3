@@ -19,7 +19,7 @@ const config = {
   "firestoreDatabaseId": "ai-studio-f1c0830d-21b2-4458-ae6b-d8a62a510911",
   "storageBucket": "gen-lang-client-0928112582.firebasestorage.app",
   "messagingSenderId": "474629672752",
-  "measurementId": ""
+  "measurementId"
 };
 
 // Initialize Firebase SDK
