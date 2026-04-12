@@ -9,7 +9,7 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   updateProfile 
-} from '../firebase';
+} from './firebase';
 
 interface AuthModalProps {
   isOpen: boolean;
