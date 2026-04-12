@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Angel } from '../types';
-import { cn } from '../lib/utils';
+import { cn } from './utils';
 
 interface AngelProfileProps {
   angel: Angel;
