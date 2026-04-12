@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Play, Pause, Wind } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from './utils';
 
 export const MeditationPlayer: React.FC<{ angelName: string }> = ({ angelName }) => {
   const [isPlaying, setIsPlaying] = useState(false);
