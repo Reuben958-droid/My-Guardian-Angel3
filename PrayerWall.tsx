@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Heart, Shield, Compass, Flower, Flame, X, Send, Leaf, LogOut } from 'lucide-react';
 import { cn } from './utils';
-import { db, auth, onAuthStateChanged, signOut, handleFirestoreError, OperationType } from '../firebase';
+import { db, auth, onAuthStateChanged, signOut, handleFirestoreError, OperationType } from './firebase'
 import { ErrorBoundary } from './ErrorBoundary';
 import { AuthModal } from './AuthModal';
 import { User as FirebaseUser } from 'firebase/auth';
