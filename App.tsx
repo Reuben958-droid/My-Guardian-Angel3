@@ -337,7 +337,13 @@ export default function App() {
                 </button>
 
                 <button
-                  onClick={() => setActiveSidebarFeature('calculator')}
+                  onClick={() => {
+                    if (user) {
+                      setActiveSidebarFeature('calculator');
+                    } else {
+                      setIsAuthModalOpen(true);
+                    }
+                  }}
                   className={cn(
                     "p-4 rounded-2xl transition-all duration-500 celestial-icon-glow group relative",
                     activeSidebarFeature === 'calculator' ? "bg-yellow-500/20 active-icon-glow" : "text-slate-500 hover:text-yellow-400"
