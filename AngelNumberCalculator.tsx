@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
   ChevronRight, 
-  ArrowLeft, 
   Heart, 
   Wind, 
   Calendar, 
@@ -20,10 +19,9 @@ import { cn } from './utils';
 import { ANGEL_NUMBERS, DEFAULT_MEANINGS, AngelNumberData } from './angelNumbers';
 
 interface AngelNumberCalculatorProps {
-  onClose: () => void;
 }
 
-export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = ({ onClose }) => {
+export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = () => {
   const [inputValue, setInputValue] = useState('');
   const [result, setResult] = useState<AngelNumberData | null>(null);
   const [displayedNumber, setDisplayedNumber] = useState('');
@@ -124,14 +122,6 @@ export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = ({ on
 
       {/* Main Content Container */}
       <div className="relative w-full h-full flex flex-col items-center justify-center p-6 overflow-y-auto">
-        <button 
-          onClick={onClose}
-          className="absolute top-8 left-8 text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-2 group"
-        >
-          <ArrowLeft className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm font-medium uppercase tracking-widest">Back to Sanctuary</span>
-        </button>
-
         <AnimatePresence mode="wait">
           {!result ? (
             <motion.div
@@ -269,7 +259,7 @@ export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = ({ on
                       <Wind className="text-sky-400 w-12 h-12" />
                     </motion.div>
                   </div>
-                  <h3 className="elegant-heading text-3xl md:text-5xl text-slate-800">
+                  <h3 className="elegant-heading text-3xl md:text-5xl golden-text">
                     {result.title}
                   </h3>
                 </motion.div>
@@ -282,7 +272,7 @@ export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = ({ on
                 transition={{ delay: 0.5 }}
                 className="max-w-3xl mx-auto text-center"
               >
-                <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-serif italic">
+                <p className="text-yellow-100/80 text-lg md:text-xl leading-relaxed font-serif italic">
                   {result.message}
                 </p>
               </motion.div>
@@ -290,9 +280,9 @@ export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = ({ on
               {/* Wisdom Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { title: "How to work with this number", content: result.howToWork, icon: Lightbulb, color: "bg-yellow-50 text-yellow-700 border-yellow-100" },
-                  { title: "Your Guardian Angel", content: result.relationToAngel, icon: Shield, color: "bg-sky-50 text-sky-700 border-sky-100" },
-                  { title: "Daily Affirmation", content: result.affirmation, icon: Star, color: "bg-purple-50 text-purple-700 border-purple-100" },
+                  { title: "How to work with this number", content: result.howToWork, icon: Lightbulb, color: "bg-yellow-500/5 text-yellow-500 border-yellow-500/20" },
+                  { title: "Your Guardian Angel", content: result.relationToAngel, icon: Shield, color: "bg-yellow-500/5 text-yellow-500 border-yellow-500/20" },
+                  { title: "Daily Affirmation", content: result.affirmation, icon: Star, color: "bg-yellow-500/5 text-yellow-500 border-yellow-500/20" },
                 ].map((card, idx) => (
                   <motion.div
                     key={card.title}
@@ -300,15 +290,15 @@ export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = ({ on
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.7 + idx * 0.1 }}
                     className={cn(
-                      "p-8 rounded-[2rem] border shadow-sm space-y-4 flex flex-col items-center text-center",
+                      "p-8 rounded-[2rem] border backdrop-blur-sm space-y-4 flex flex-col items-center text-center",
                       card.color
                     )}
                   >
-                    <div className="p-3 rounded-2xl bg-white/80 shadow-sm">
-                      <card.icon size={24} />
+                    <div className="p-3 rounded-2xl bg-yellow-500/10 shadow-sm">
+                      <card.icon size={24} className="text-yellow-500" />
                     </div>
                     <h4 className="font-bold tracking-wider uppercase text-xs">{card.title}</h4>
-                    <p className="text-sm leading-relaxed opacity-90">{card.content}</p>
+                    <p className="text-sm leading-relaxed text-yellow-100/80">{card.content}</p>
                   </motion.div>
                 ))}
               </div>
