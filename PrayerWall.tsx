@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Heart, Shield, Compass, Flower, Flame, X, Send, Leaf, LogOut } from 'lucide-react';
 import { cn } from './utils';
-import { db, auth, onAuthStateChanged, signOut, handleFirestoreError, OperationType } from './firebase'
+import { db, auth, onAuthStateChanged, signOut, handleFirestoreError, OperationType } from './firebase';
 import { ErrorBoundary } from './ErrorBoundary';
 import { AuthModal } from './AuthModal';
 import { User as FirebaseUser } from 'firebase/auth';
@@ -49,10 +49,9 @@ interface PrayerBubble {
 }
 
 interface PrayerWallProps {
-  onClose?: () => void;
 }
 
-export const PrayerWall: React.FC<PrayerWallProps> = ({ onClose }) => {
+export const PrayerWall: React.FC<PrayerWallProps> = () => {
   const [prayers, setPrayers] = useState<PrayerBubble[]>([]);
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [viewMode, setViewMode] = useState<'all' | 'mine'>('all');
@@ -334,8 +333,8 @@ export const PrayerWall: React.FC<PrayerWallProps> = ({ onClose }) => {
         ))}
       </div>
 
-      {/* Close Button */}
-      {onClose && !isFormOpen && !isReflecting && (
+      {/* Header Controls */}
+      {(!isFormOpen && !isReflecting) && (
         <div className="absolute top-8 right-8 z-[130] flex items-center gap-4">
           {/* View Toggle */}
           {user && (
@@ -378,15 +377,6 @@ export const PrayerWall: React.FC<PrayerWallProps> = ({ onClose }) => {
               Sign in to see your prayers
             </button>
           )}
-
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            onClick={onClose}
-            className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md border border-white/20 transition-all hover:scale-110"
-          >
-            <X size={24} />
-          </motion.button>
         </div>
       )}
 
