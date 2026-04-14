@@ -144,7 +144,7 @@ export const AngelNumberCalculator: React.FC<AngelNumberCalculatorProps> = () =>
                   initial={{ y: -10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="text-slate-500 text-lg md:text-xl italic font-serif"
+                  className="golden-text text-lg md:text-xl italic font-serif"
                 >
                   Enter any number and receive a personal message from the angels.
                 </motion.p>
