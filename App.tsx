@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, ChevronRight, ArrowLeft, Heart, Wind, User, LogOut } from 'lucide-react';
-
 import { CelestialBackground } from './CelestialBackground';
 import { AngelProfile } from './AngelProfile';
 import { PrayerWall } from './PrayerWall';
@@ -10,7 +9,6 @@ import { MeditationPlayer } from './MeditationPlayer';
 import { DailyGuidance } from './DailyGuidance';
 import { ErrorBoundary } from './ErrorBoundary';
 import { AuthModal } from './AuthModal';
-
 import { auth, onAuthStateChanged, signOut } from './firebase';
 import { ANGELS, QUIZ_QUESTIONS, Angel } from './types';
 import { User as FirebaseUser } from 'firebase/auth';
@@ -302,7 +300,7 @@ export default function App() {
                 <button
                   onClick={() => {
                     if (user) {
-                      setActiveSidebarFeature(activeSidebarFeature === 'meditation' ? null : 'meditation');
+                      setActiveSidebarFeature('meditation');
                     } else {
                       setIsAuthModalOpen(true);
                     }
@@ -322,7 +320,7 @@ export default function App() {
                 </button>
 
                 <button
-                  onClick={() => setActiveSidebarFeature(activeSidebarFeature === 'prayer' ? null : 'prayer')}
+                  onClick={() => setActiveSidebarFeature('prayer')}
                   className={cn(
                     "p-4 rounded-2xl transition-all duration-500 celestial-icon-glow group relative",
                     activeSidebarFeature === 'prayer' ? "bg-yellow-500/20 active-icon-glow" : "text-slate-500 hover:text-yellow-400"
@@ -339,7 +337,7 @@ export default function App() {
                 </button>
 
                 <button
-                  onClick={() => setActiveSidebarFeature(activeSidebarFeature === 'calculator' ? null : 'calculator')}
+                  onClick={() => setActiveSidebarFeature('calculator')}
                   className={cn(
                     "p-4 rounded-2xl transition-all duration-500 celestial-icon-glow group relative",
                     activeSidebarFeature === 'calculator' ? "bg-yellow-500/20 active-icon-glow" : "text-slate-500 hover:text-yellow-400"
@@ -409,9 +407,9 @@ export default function App() {
                     />
                   )}
                   {activeSidebarFeature === 'prayer' ? (
-                    <PrayerWall onClose={() => setActiveSidebarFeature(null)} />
+                    <PrayerWall />
                   ) : activeSidebarFeature === 'calculator' ? (
-                    <AngelNumberCalculator onClose={() => setActiveSidebarFeature(null)} />
+                    <AngelNumberCalculator />
                   ) : (
                     <motion.div 
                       initial={{ scale: 0.9, opacity: 0 }}
