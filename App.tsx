@@ -469,7 +469,7 @@ export default function App() {
                       <div className="absolute inset-0 w-2 h-2 bg-yellow-500 rounded-full animate-ping opacity-75" />
                     </div>
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-yellow-500/80">
-                      Angel Status: <span className="text-white">Active</span>
+                      Angel Status: <span className="text-white">Connected</span>
                     </span>
                   </motion.div>
                 )}
@@ -501,14 +501,14 @@ export default function App() {
                         </div>
                         <div>
                           <h3 className="elegant-heading text-3xl golden-text">Sanctuary Wisdom</h3>
-                          <p className="text-slate-400">Explore the tools of the Divine Sanctuary</p>
+                          <p className="text-white">Explore the tools of the Divine Sanctuary</p>
                         </div>
                       </div>
                       
                       <div className="h-px w-full bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent" />
                       
                       <div className="space-y-4">
-                        <p className="text-slate-400 text-lg leading-relaxed mb-6">
+                        <p className="text-white text-lg leading-relaxed mb-6">
                           Explore the sanctuary tools in the navigation bar to deepen your journey:
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
