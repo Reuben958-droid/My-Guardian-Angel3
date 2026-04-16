@@ -6,6 +6,8 @@
       "type": "object",
       "properties": {
         "text": { "type": "string", "description": "The prayer text content." },
+        "userId": { "type": "string", "description": "The UID of the user who created the prayer." },
+        "lightCount": { "type": "integer", "description": "Number of lights sent to this prayer." },
         "tokenId": { "type": "string", "description": "The ID of the energy token selected." },
         "candles": { "type": "integer", "description": "Number of candles lit for this prayer." },
         "isCandleLit": { "type": "boolean", "description": "Whether the original creator lit a candle." },
@@ -13,10 +15,9 @@
         "x": { "type": "number", "description": "Horizontal position percentage." },
         "y": { "type": "number", "description": "Vertical starting position percentage." },
         "size": { "type": "number", "description": "Bubble size." },
-        "duration": { "type": "number", "description": "Drift duration in seconds." },
-        "uid": { "type": "string", "description": "The UID of the user who created the prayer." }
+        "duration": { "type": "number", "description": "Drift duration in seconds." }
       },
-      "required": ["text", "tokenId", "candles", "createdAt", "x", "y", "size", "duration", "uid"]
+      "required": ["text", "userId", "lightCount", "tokenId", "candles", "createdAt", "x", "y", "size", "duration"]
     }
   },
   "firestore": {
