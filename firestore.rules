@@ -41,12 +41,13 @@ service cloud.firestore {
       return data.text is string && data.text.size() > 0 && data.text.size() <= 500 &&
              data.tokenId in ['healing', 'strength', 'gratitude', 'guidance'] &&
              data.candles is int && data.candles >= 0 &&
+             data.lightCount is int && data.lightCount >= 0 &&
              data.createdAt is int &&
              data.x is number && data.x >= 0 && data.x <= 100 &&
              data.y is number && data.y >= 0 && data.y <= 120 &&
              data.size is number && data.size >= 50 && data.size <= 300 &&
-             data.duration is number && data.duration >= 10 && data.duration <= 60 &&
-             data.uid is string && data.uid == request.auth.uid;
+             data.duration is number && data.duration >= 10 && data.duration <= 120 &&
+             data.userId is string && data.userId == request.auth.uid;
     }
 
     // ===============================================================
@@ -57,15 +58,18 @@ service cloud.firestore {
       // Allow anyone to read prayers to see the wall
       allow read: if true;
 
-      // Allow anyone to create a prayer (anonymity requested)
+      // Allow anyone to create a prayer
       allow create: if isAuthenticated() &&
-                      hasRequiredFields(['text', 'tokenId', 'candles', 'createdAt', 'x', 'y', 'size', 'duration', 'uid']) &&
-                      hasOnlyAllowedFields(['text', 'tokenId', 'candles', 'isCandleLit', 'createdAt', 'x', 'y', 'size', 'duration', 'uid']) &&
+                      hasRequiredFields(['text', 'tokenId', 'candles', 'lightCount', 'createdAt', 'x', 'y', 'size', 'duration', 'userId']) &&
+                      hasOnlyAllowedFields(['text', 'tokenId', 'candles', 'lightCount', 'isCandleLit', 'createdAt', 'x', 'y', 'size', 'duration', 'userId']) &&
                       isValidPrayer(request.resource.data);
 
-      // Allow updating ONLY the candles count
-      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['candles']) &&
-                      request.resource.data.candles == resource.data.candles + 1;
+      // Allow updating ONLY the candles count or lightCount
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['candles', 'lightCount']) &&
+                      (
+                        (request.resource.data.candles == resource.data.candles + 1) ||
+                        (request.resource.data.lightCount == resource.data.lightCount + 1)
+                      );
       
       // No one can delete prayers (they fade away client-side or via TTL if configured, but here we just don't allow manual deletion)
       allow delete: if false;
