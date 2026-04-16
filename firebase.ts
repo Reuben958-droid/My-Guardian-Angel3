@@ -7,22 +7,24 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  signOut
+  signOut,
+  signInAnonymously
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+
 const config = {
   projectId: "gen-lang-client-0928112582",
   appId: "1:474629672752:web:74d1438f13346edc6342f5",
-  apiKey: "AIzaSyBWkg93t2bhkP1rroPKy5RS-EZu4CxNIQo",
+  apiKey: "AIzaSyBWkg93t2bhkPlrroPkY5RS-Fzu4CxNTOo",
   authDomain: "gen-lang-client-0928112582.firebaseapp.com",
   storageBucket: "gen-lang-client-0928112582.firebasestorage.app",
   messagingSenderId: "474629672752"
 };
 
-// Initialize Firebase SDK
 const app = initializeApp(config);
+
 export const db = getFirestore(app);
-export const auth = getAuth();
+export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
 export { 
@@ -31,7 +33,8 @@ export {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  signOut
+  signOut,
+  signInAnonymously
 };
 
 export enum OperationType {
@@ -62,9 +65,15 @@ export interface FirestoreErrorInfo {
   }
 }
 
-export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+export function handleFirestoreError(
+  error: unknown,
+  operationType: OperationType,
+  path: string | null
+) {
   const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),
+    operationType,
+    path,
     authInfo: {
       userId: auth.currentUser?.uid,
       email: auth.currentUser?.email,
@@ -77,10 +86,9 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
         email: provider.email,
         photoUrl: provider.photoURL
       })) || []
-    },
-    operationType,
-    path
-  }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
-  throw new Error(JSON.stringify(errInfo));
+    }
+  };
+
+  console.error('Firestore Error:', errInfo);
+  throw new Error(errInfo.error);
 }
