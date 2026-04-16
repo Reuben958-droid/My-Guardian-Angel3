@@ -9,7 +9,7 @@ import { MeditationPlayer } from './MeditationPlayer';
 import { DailyGuidance } from './DailyGuidance';
 import { ErrorBoundary } from './ErrorBoundary';
 import { AuthModal } from './AuthModal';
-import { auth, onAuthStateChanged, signOut } from './firebase';
+import { auth, onAuthStateChanged, signOut, signInAnonymously } from './firebase';
 import { ANGELS, QUIZ_QUESTIONS, Angel } from './types';
 import { User as FirebaseUser } from 'firebase/auth';
 import { cn } from './utils';
@@ -26,7 +26,27 @@ export default function App() {
   const [activeSidebarFeature, setActiveSidebarFeature] = useState<'meditation' | 'prayer' | 'calculator' | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (!currentUser) {
+        try {
+          await signInAnonymously(auth);
+        } catch (error: any) {
+          if (error?.code === 'auth/admin-restricted-operation') {
+            console.error(
+              "CRITICAL: Anonymous Authentication is disabled in your Firebase Console.\n\n" +
+              "To fix this:\n" +
+              "1. Go to https://console.firebase.google.com/\n" +
+              "2. Select your project.\n" +
+              "3. Go to 'Authentication' > 'Sign-in method'.\n" +
+              "4. Click 'Add new provider' and select 'Anonymous'.\n" +
+              "5. Enable it and save.\n\n" +
+              "The app requires this for the 'My Sanctuary' features to work correctly."
+            );
+          } else {
+            console.error("Anonymous sign-in failed:", error);
+          }
+        }
+      }
       setUser(currentUser);
     });
     return () => unsubscribe();
