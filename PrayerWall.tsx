@@ -70,7 +70,7 @@ export const PrayerWall: React.FC = () => {
       setUser(currentUser);
     });
     return () => unsubscribe();
-  }, []);
+  }, [db]);
 
   // Real-time prayers from Firestore
   useEffect(() => {
