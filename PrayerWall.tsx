@@ -165,24 +165,49 @@ useEffect(() => {
   };
 
   const handleRelease = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newPrayerText.trim()) return;
+  e.preventDefault();
 
-    setIsReflecting(true);
-    
-    const prayerData = {
-      text: newPrayerText,
-      tokenId: selectedToken.id,
-      candles: isCandleLit ? 1 : 0,
-      lightCount: 0,
-      isCandleLit,
-      createdAt: Date.now(),
-      x: Math.random() * 80 + 10,
-      y: 110,
-      size: Math.random() * 40 + 140,
-      duration: 30,
-      userId: user?.uid || 'anonymous',
-    };
+  if (!newPrayerText.trim() || !db) return;
+
+  if (!user) {
+    setIsAuthModalOpen(true);
+    return;
+  }
+
+  setIsReflecting(true);
+
+  const prayerData = {
+    text: newPrayerText.trim(),
+    tokenId: selectedToken.id,
+    candles: isCandleLit ? 1 : 0,
+    lightCount: 0,
+    isCandleLit,
+    createdAt: Date.now(),
+    x: Math.random() * 80 + 10,
+    y: 110,
+    size: Math.random() * 40 + 140,
+    duration: 30,
+    userId: user.uid,
+  };
+
+  try {
+    await addDoc(collection(db, 'prayers'), prayerData);
+
+    setNewPrayerText('');
+    setIsCandleLit(false);
+    setIsFormOpen(false);
+
+    // optional: keep reflection if you want UX delay
+    setTimeout(() => {
+      setIsReflecting(false);
+    }, 1500);
+
+  } catch (error) {
+    console.error('Failed to send prayer:', error);
+    handleFirestoreError(error, OperationType.CREATE, 'prayers');
+    setIsReflecting(false);
+  }
+};
 
     try {
       await addDoc(collection(db, 'prayers'), prayerData);
