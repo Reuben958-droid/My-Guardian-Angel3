@@ -65,25 +65,33 @@ export const PrayerWall: React.FC = () => {
   const wallRef = useRef<HTMLDivElement>(null);
 
   // Auth listener
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
 
-  // Real-time prayers from Firestore
-  useEffect(() => {
-    const q = query(
-      collection(db, 'prayers'),
-      orderBy('createdAt', 'desc'),
-      limit(50)
-    );
+  return () => unsubscribe();
+}, []);
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const loadedPrayers = snapshot.docs.map(doc => {
+useEffect(() => {
+  if (!db) return;
+
+  const q = query(
+    collection(db, 'prayers'),
+    orderBy('createdAt', 'desc'),
+    limit(50)
+  );
+
+  const unsubscribe = onSnapshot(
+    q,
+    (snapshot) => {
+      const loadedPrayers = snapshot.docs.map((doc) => {
         const data = doc.data();
-        const token = ENERGY_TOKENS.find(t => t.id === data.tokenId) || ENERGY_TOKENS[0];
+
+        const token =
+          ENERGY_TOKENS.find((t) => t.id === data.tokenId) ||
+          ENERGY_TOKENS[0];
+
         return {
           id: doc.id,
           text: data.text,
@@ -96,16 +104,20 @@ export const PrayerWall: React.FC = () => {
           y: data.y,
           size: data.size,
           duration: data.duration,
-          userId: data.userId
+          userId: data.userId,
         } as PrayerBubble;
       });
-      setPrayers(loadedPrayers);
-    }, (error) => {
-      handleFirestoreError(error, OperationType.LIST, 'prayers');
-    });
 
-    return () => unsubscribe();
-  }, []);
+      setPrayers(loadedPrayers);
+    },
+    (error) => {
+      console.error(error);
+      handleFirestoreError(error, OperationType.LIST, 'prayers');
+    }
+  );
+
+  return () => unsubscribe();
+}, [db]);
 
   const myPrayers = useMemo(() => {
     if (!user) return [];
